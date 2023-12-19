@@ -1,0 +1,4 @@
+VYSLEDOK HRY:
+A:	12 bodov
+B:	16 bodov
+C:	22 bodov

@@ -1,0 +1,20 @@
+#pragma once
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <cctype>
+
+class OperacieSlova
+{
+private:
+	std::vector<std::string> zoznamSlov;
+
+public:
+	static bool porovnajSlovaPodlaAbecedy(const std::string& a, const std::string& b);
+	void usporiadajKlesajuco();
+	std::vector<std::string>& getZoznamSlov();
+	void vypisZoznamSlov();
+	void vypisRovnakeSlova();
+};
+
