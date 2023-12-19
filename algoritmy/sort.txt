@@ -1,0 +1,38 @@
+bool Trieda::porovnanie(const std::string& a, const std::string& b)
+{
+    for (int i = 0; i < std::min(a.size(), b.size()); ++i) {
+        if (tolower(a[i]) != tolower(b[i]))
+            return tolower(a[i]) > tolower(b[i]);
+    }
+    return a.size() < b.size();
+}
+
+void Trieda::usporiadanie()
+{
+    std::sort(zoznamSlov.begin(), zoznamSlov.end(), porovnajSlovaPodlaAbecedy);
+}
+
+
+//
+std::vector<std::pair<std::string, int>> Trieda::zoradenyVec()
+{
+    std::vector<std::pair<std::string, int>> vec(tabulkaBodov.begin(), tabulkaBodov.end());
+
+    std::sort(vec.begin(), vec.end(), [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
+        return a.second > b.second;
+        });
+
+    return vec;
+}
+
+
+//
+bool Trieda::porovnajAbecedne(Vlak& a, Vlak& b)
+{
+    return a.getNazovStanice() < b.getNazovStanice();
+}
+
+void Trieda::zorad()
+{
+    std::sort(vlaky.begin(), vlaky.end(), porovnajPodlaAbecedy);
+}

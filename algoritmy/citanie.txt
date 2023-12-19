@@ -1,0 +1,166 @@
+bool OperacieSubor::citajZoSuboru(std::string& nazovSuboru, std::vector<std::string>& slova)
+{
+	std::ifstream subor(nazovSuboru);
+
+	if (subor.is_open())
+	{
+		std::string slovo;
+
+		while (std::getline(subor, slovo))
+		{
+			slova.push_back(slovo);
+		}
+
+		subor.close();
+		return true;
+	}
+
+	std::cout << "Nepodarilo sa otvorit subor na citanie" << std::endl;
+	return false;
+}
+
+
+//
+bool OperacieSubor::nacitajZoSuboru(std::string& nazovSuboru, std::vector<Krajina>& futbaloveKrajiny)
+{
+    std::ifstream subor(nazovSuboru);
+
+	if (subor.is_open())
+	{
+		std::string riadok;
+
+		while (std::getline(subor, riadok))
+		{
+			std::istringstream ss(riadok);
+			Krajina krajina;
+			std::string nazovKrajiny;
+
+			ss >> nazovKrajiny;
+
+			krajina.setNazov(nazovKrajiny);
+
+			futbaloveKrajiny.push_back(krajina);
+		}
+
+		subor.close();
+		return true;
+	}
+
+	std::cout << "Subor sa nepodarilo otvorit na citanie." << std::endl;
+	return false;
+}
+
+
+//
+bool NacitajZoSuboru::citajZoSuboru(std::string& nazovSuboru, std::vector<Vlak>& vlaky)
+{
+	std::ifstream subor(nazovSuboru);
+
+	if (subor.is_open())
+	{
+		std::string riadok;
+
+		while (std::getline(subor, riadok))
+		{
+			std::istringstream ss(riadok);
+			Vlak vlak;
+			int cisloVlaku, casOdjazduHodina, casOdjazduMinuta;
+			std::string nazovStanice;
+			char dvojbodka;
+
+			ss >> cisloVlaku >> nazovStanice >> casOdjazduHodina >> dvojbodka >> casOdjazduMinuta;
+
+			vlak.setCisloVlaku(cisloVlaku);
+			vlak.setNazovStanice(nazovStanice);
+			vlak.setCasOdjazduHodina(casOdjazduHodina);
+			vlak.setCasOdjazduMinuta(casOdjazduMinuta);
+
+			vlaky.push_back(vlak);
+		}
+
+		subor.close();
+		return true;
+	}
+	else
+	{
+		std::cout << "Nepodarilo sa otvorit subor na citanie" << std::endl;
+		return false;
+	}
+
+}
+
+
+//
+bool OperacieSubor::citajZoSuboru(std::string& nazovSuboru, std::vector<Vlak>& vlaky)
+{
+    std::ifstream subor(nazovSuboru);
+
+    if (subor.is_open()) 
+    {
+        std::string riadok;
+        Vlak vlak;
+        bool vlakJeInicializovany = false;
+
+        while (std::getline(subor, riadok)) 
+        {
+            std::istringstream ss(riadok);
+            int nazovVlaku;
+
+            if (ss >> nazovVlaku) 
+            {
+                if (vlakJeInicializovany) 
+                {
+                    vlaky.push_back(vlak);
+                }
+                vlak = Vlak();  //resetne objekt vlak
+                vlak.setNazovVlaku(nazovVlaku);
+                vlakJeInicializovany = true;
+            }
+            else if (vlakJeInicializovany)
+            {
+                ss.clear(); // Clear the failed state of the stringstream
+                ss.str(riadok); // Reset the stringstream with the original line
+                std::string nazovStanice;
+                getline(ss, nazovStanice); // Use getline to read the station name, in case it contains spaces
+                vlak.pridajZastavku(nazovStanice);
+            }
+        }
+
+        // pridaj posledny vlak ak bol inicializovany
+        if (vlakJeInicializovany) {
+            vlaky.push_back(vlak);
+        }
+
+        subor.close();
+        return true;
+	}
+	else
+	{
+		std::cout << "Nepodarilo sa otvorit subor na citanie" << std::endl;
+		return false;
+	}
+}
+
+
+// zapis
+bool Hra::vypisVysledokHryDoSuboru(std::string nazovSuboru)
+{
+	std::ofstream subor(nazovSuboru);
+
+	if (subor.is_open())
+	{
+		subor << "VYSLEDOK HRY:" << std::endl;
+		subor << "A:\t" << hracA.getPocetBodov() << " bodov" << std::endl;
+		subor << "B:\t" << hracB.getPocetBodov() << " bodov" << std::endl;
+		subor << "C:\t" << hracC.getPocetBodov() << " bodov" << std::endl;
+
+		subor.close();
+		return true;
+	}
+	else 
+	{
+		std::cout << "Nepodarilo sa otvorit subor na zapis" << std::endl;
+		return false;
+	}
+}
+
